@@ -1,6 +1,5 @@
 (ns leiningen.rpm
-  "Create an RPM"
-    (:import [org.codehaus.mojo.rpm RPMMojo AbstractRPMMojo Mapping Source]
+  (:import [org.codehaus.mojo.rpm RPMMojo AbstractRPMMojo Mapping Source]
            [org.apache.maven.project MavenProject]
            [org.apache.maven.shared.filtering DefaultMavenFileFilter]
            [org.codehaus.plexus.logging.console ConsoleLogger]))
