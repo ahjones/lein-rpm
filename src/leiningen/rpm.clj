@@ -12,14 +12,14 @@
 
 (defn rpm
   "Create an RPM"
-  [project & keys]
+  [{{{:keys [summary name]} :rpm} :as project} & keys]
 
   (let [mojo (RPMMojo.)
         fileFilter (DefaultMavenFileFilter.)
         mapping (Mapping.)
         source (Source.)]
     (set-mojo! mojo "projversion" "1.0.0-SNAPSHOT")
-    (set-mojo! mojo "name" "aj_rpm")
+    (set-mojo! mojo "name" name)
     (.setLocation source "classes")
     (.setDirectory mapping "/tmp")
     (.setSources mapping (doto (java.util.ArrayList.) (.add source)))
@@ -27,6 +27,6 @@
     (set-mojo! mojo "project" (MavenProject.))
     (.enableLogging fileFilter (ConsoleLogger. 0 "Logger"))
     (set-mojo! mojo "mavenFileFilter" fileFilter)
-    (set-mojo! mojo "summary" "summary")
+    (set-mojo! mojo "summary" summary)
     (set-mojo! mojo "copyright" "copyright")
     (.execute mojo)))
