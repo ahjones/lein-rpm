@@ -12,7 +12,7 @@
 
 (defn rpm
   "Create an RPM"
-  [{{{:keys [summary name]} :rpm} :as project} & keys]
+  [{{:keys [summary name]} :rpm :as project} & keys]
 
   (let [mojo (RPMMojo.)
         fileFilter (DefaultMavenFileFilter.)
