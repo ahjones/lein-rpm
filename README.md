@@ -1,10 +1,10 @@
-# plugin
+# RPM plugin
 
-FIXME: write description
+Create an RPM from build target
 
 ## Usage
 
-FIXME: write
+lein rpm
 
 ## License
 
