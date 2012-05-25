@@ -31,19 +31,21 @@
 (defn create-mappings [[mapping & rest]]
   (if mapping (cons (create-mapping mapping) (create-mappings rest)) ()))
 
-(defn rpm
-  "Create an RPM"
-  [{{:keys [summary name]} :rpm :keys [version]} & keys]
-
+(defn createBaseMojo []
   (let [mojo (RPMMojo.)
         fileFilter (DefaultMavenFileFilter.)]
+    (set-mojo! mojo "project" (MavenProject.))
+    (.enableLogging fileFilter (ConsoleLogger. 0 "Logger"))
+    (set-mojo! mojo "mavenFileFilter" fileFilter)))
+
+(defn rpm
+  "Create an RPM"
+  [{{:keys [summary name copyright]} :rpm :keys [version]} & keys]
+
+  (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
     (set-mojo! mojo "summary" summary)
     (set-mojo! mojo "mappings" (arrayList (create-mappings)))
-    
-    (set-mojo! mojo "project" (MavenProject.))
-    (.enableLogging fileFilter (ConsoleLogger. 0 "Logger"))
-    (set-mojo! mojo "mavenFileFilter" fileFilter)
-    (set-mojo! mojo "copyright" "copyright")
+    (set-mojo! mojo "copyright" copyright)
     (.execute mojo)))
