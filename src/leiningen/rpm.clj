@@ -10,23 +10,40 @@
     (.set field object value))
   object)
 
+(defn arrayList [cljList]
+  (let [list (java.util.ArrayList)]
+    (doseq [thing cljList] (.add list thing))
+    list))
+
+(defn create-sources [{source :source}]
+  (for [path source] (doto (Source.) (.setLocation path))))
+
+(defn create-mapping [{:keys [directory filemode username groupname sources]}]
+  (let [mapping (Mapping.)]
+    (doto mapping
+      (.setDirectory directory)
+      (.setFilemode filemode)
+      (.setUsername username)
+      (.setGroupname groupname)
+      (.setSources (arrayList (create-sources sources))))
+    mapping))
+
+(defn create-mappings [[mapping & rest]]
+  (if mapping (cons (create-mapping mapping) (create-mappings rest)) ()))
+
 (defn rpm
   "Create an RPM"
-  [{{:keys [summary name]} :rpm :as project} & keys]
+  [{{:keys [summary name]} :rpm :keys [version]} & keys]
 
   (let [mojo (RPMMojo.)
-        fileFilter (DefaultMavenFileFilter.)
-        mapping (Mapping.)
-        source (Source.)]
-    (set-mojo! mojo "projversion" "1.0.0-SNAPSHOT")
+        fileFilter (DefaultMavenFileFilter.)]
+    (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
-    (.setLocation source "classes")
-    (.setDirectory mapping "/tmp")
-    (.setSources mapping (doto (java.util.ArrayList.) (.add source)))
-    (set-mojo! mojo "mappings" (doto (java.util.ArrayList.) (.add mapping)))
+    (set-mojo! mojo "summary" summary)
+    (set-mojo! mojo "mappings" (arrayList (create-mappings)))
+    
     (set-mojo! mojo "project" (MavenProject.))
     (.enableLogging fileFilter (ConsoleLogger. 0 "Logger"))
     (set-mojo! mojo "mavenFileFilter" fileFilter)
-    (set-mojo! mojo "summary" summary)
     (set-mojo! mojo "copyright" "copyright")
     (.execute mojo)))
