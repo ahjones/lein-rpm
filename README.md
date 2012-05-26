@@ -16,7 +16,7 @@ the options that are supported at the moment.
             :summary "RPM summary"
             :copyright "Andrew H Jones"
             :mappings [{:directory "/usr/local/bin/landfill"
-                        :filemode 440
+                        :filemode "440"
                         :username "dumper"
                         :groupname "dumpgroup"
                         :sources {:source ["target/classes"]}}]})
