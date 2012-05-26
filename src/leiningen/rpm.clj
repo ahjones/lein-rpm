@@ -40,12 +40,12 @@
 
 (defn rpm
   "Create an RPM"
-  [{{:keys [summary name copyright]} :rpm :keys [version]} & keys]
+  [{{:keys [summary name copyright mappings]} :rpm :keys [version]} & keys]
 
   (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
     (set-mojo! mojo "summary" summary)
-    (set-mojo! mojo "mappings" (arrayList (create-mappings)))
+    (set-mojo! mojo "mappings" (arrayList (create-mappings mappings)))
     (set-mojo! mojo "copyright" copyright)
     (.execute mojo)))
