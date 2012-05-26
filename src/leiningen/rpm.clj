@@ -19,14 +19,12 @@
   (for [path source] (doto (Source.) (.setLocation path))))
 
 (defn create-mapping [{:keys [directory filemode username groupname sources]}]
-  (let [mapping (Mapping.)]
-    (doto mapping
-      (.setDirectory directory)
-      (.setFilemode filemode)
-      (.setUsername username)
-      (.setGroupname groupname)
-      (.setSources (arrayList (create-sources sources))))
-    mapping))
+  (doto (Mapping.)
+    (.setDirectory directory)
+    (.setFilemode filemode)
+    (.setUsername username)
+    (.setGroupname groupname)
+    (.setSources (arrayList (create-sources sources)))))
 
 (defn create-mappings [[mapping & rest]]
   (if mapping (cons (create-mapping mapping) (create-mappings rest)) ()))
