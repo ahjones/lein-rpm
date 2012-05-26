@@ -11,7 +11,7 @@
   object)
 
 (defn arrayList [cljList]
-  (let [list (java.util.ArrayList)]
+  (let [list (java.util.ArrayList.)]
     (doseq [thing cljList] (.add list thing))
     list))
 
