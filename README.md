@@ -5,7 +5,7 @@ it only works with Leiningen 2.
 
 ## Usage
 
-Add `lein-rpm "0.0.1-SNAPSHOT"` to the plugins in `project.clj` and
+Add `lein-rpm "0.0.2"` to the plugins in `project.clj` and
 then add an `:rpm` key to the project. This example shows most of the
 options that are available.
 
