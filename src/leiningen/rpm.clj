@@ -15,8 +15,8 @@
     (doseq [thing cljList] (.add list thing))
     list))
 
-(defn create-sources [{source :source}]
-  (for [path source] (doto (Source.) (.setLocation path))))
+(defn create-sources [[{:keys [location] :as sources} & rest]]
+  (if (seq sources) (cons (doto (Source.) (.setLocation location)) (create-sources rest)) ()))
 
 (defn create-mapping [{:keys [directory filemode username groupname sources]}]
   (doto (Mapping.)
