@@ -1,4 +1,5 @@
 (ns leiningen.rpm
+  (:require [clojure.java.data :as data])
   (:import [org.codehaus.mojo.rpm RPMMojo AbstractRPMMojo Mapping Source]
            [org.apache.maven.project MavenProject]
            [org.apache.maven.shared.filtering DefaultMavenFileFilter]
@@ -15,16 +16,15 @@
     (doseq [thing cljList] (.add list thing))
     list))
 
-(defn create-sources [[{:keys [location] :as sources} & rest]]
-  (if (seq sources) (cons (doto (Source.) (.setLocation location)) (create-sources rest)) ()))
+(defn create-sources [[source & rest]]
+  (if (seq source) (cons (data/to-java Source source) (create-sources rest)) ()))
 
 (defn create-mapping [{:keys [directory filemode username groupname sources]}]
-  (doto (Mapping.)
-    (.setDirectory directory)
-    (.setFilemode filemode)
-    (.setUsername username)
-    (.setGroupname groupname)
-    (.setSources (arrayList (create-sources sources)))))
+  (data/to-java Mapping {:directory directory
+                         :filemode filemode
+                         :username username
+                         :groupname groupname
+                         :sources (create-sources sources)}))
 
 (defn create-mappings [[mapping & rest]]
   (if mapping (cons (create-mapping mapping) (create-mappings rest)) ()))
