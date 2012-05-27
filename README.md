@@ -6,12 +6,15 @@ it only works with Leiningen 2.
 ## Usage
 
 Add `lein-rpm "0.0.1-SNAPSHOT"` to the plugins in `project.clj` and
-then add an `:rpm` key to the project. This is a full example of all
-the options that are supported at the moment.
+then add an `:rpm` key to the project. This example shows most of the
+options that are available.
 
-    (defproject example "0.0.1-SNAPSHOT"
-      :description "Project that needs an RPM"
-      :plugins [[lein-rpm "0.0.1-SNAPSHOT"]]
+    (defproject lein-rpm "0.1-SNAPSHOT"
+      :description "Create an RPM"
+      :dependencies [[org.codehaus.mojo/rpm-maven-plugin "2.1-alpha-1"]]
+      :eval-in-leiningen true
+      :plugins [[lein-pprint "1.1.1"]
+                [lein-rpm "0.0.2"]]
       :rpm {:name "Name"
             :summary "RPM summary"
             :copyright "Andrew H Jones"
@@ -19,8 +22,10 @@ the options that are supported at the moment.
                         :filemode "440"
                         :username "dumper"
                         :groupname "dumpgroup"
-                        :sources [{:location "target"}
-                                  {:location "src"}]}]})
+                        :sources {:source [{:location "target/classes"}
+                                           {:location "src"}]
+                                  :softlinkSource [{:location "/usr/local/bin/new.sh"
+                                                    :destination "old.sh"}]}}]})
 
 ## License
 
