@@ -19,7 +19,8 @@ the options that are supported at the moment.
                         :filemode "440"
                         :username "dumper"
                         :groupname "dumpgroup"
-                        :sources {:source ["target/classes"]}}]})
+                        :sources [{:location "target"}
+                                  {:location "src"}]}]})
 
 ## License
 
