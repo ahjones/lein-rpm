@@ -1,6 +1,6 @@
 (ns leiningen.rpm
   (:require [clojure.java.data :as data])
-  (:import [org.codehaus.mojo.rpm RPMMojo AbstractRPMMojo Mapping Source]
+  (:import [org.codehaus.mojo.rpm RPMMojo AbstractRPMMojo Mapping Source SoftlinkSource]
            [org.apache.maven.project MavenProject]
            [org.apache.maven.shared.filtering DefaultMavenFileFilter]
            [org.codehaus.plexus.logging.console ConsoleLogger]))
@@ -10,8 +10,11 @@
     (doseq [item clj-list] (.add list item))
     list))
 
-(defn create-sources [[sources & rest]]
-  (if (seq sources) (cons (data/to-java Source (:source sources)) (create-sources rest)) ()))
+(defn create-source [class [source & rest]]
+  (if source (cons (data/to-java class source) (create-source class rest)) ()))
+
+(defn create-sources [{:keys [source softlinkSource]}]
+  (concat (create-source Source source) (create-source SoftlinkSource softlinkSource)))
 
 (defn create-mapping [{s :sources :as mapping}]
   (data/to-java Mapping (assoc mapping :sources (create-sources s))))
