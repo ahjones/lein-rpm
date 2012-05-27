@@ -13,5 +13,5 @@
                     :filemode "440"
                     :username "dumper"
                     :groupname "dumpgroup"
-                    :sources [{:location "target/classes"}
-                              {:location "src"}]}]})
+                    :sources [{:source {:location "target/classes"}}
+                              {:source {:location "src"}}]}]})

@@ -5,29 +5,25 @@
            [org.apache.maven.shared.filtering DefaultMavenFileFilter]
            [org.codehaus.plexus.logging.console ConsoleLogger]))
 
+(defn create-array-list [clj-list]
+  (let [list (java.util.ArrayList.)]
+    (doseq [item clj-list] (.add list item))
+    list))
+
+(defn create-sources [[sources & rest]]
+  (if (seq sources) (cons (data/to-java Source (:source sources)) (create-sources rest)) ()))
+
+(defn create-mapping [{s :sources :as mapping}]
+  (data/to-java Mapping (assoc mapping :sources (create-sources s))))
+
+(defn create-mappings [[mapping & rest]]
+  (if mapping (cons (create-mapping mapping) (create-mappings rest)) ()))
+
 (defn set-mojo! [object name value]
   (let [field (.getDeclaredField AbstractRPMMojo name)]
     (.setAccessible field true)
     (.set field object value))
   object)
-
-(defn arrayList [cljList]
-  (let [list (java.util.ArrayList.)]
-    (doseq [thing cljList] (.add list thing))
-    list))
-
-(defn create-sources [[source & rest]]
-  (if (seq source) (cons (data/to-java Source source) (create-sources rest)) ()))
-
-(defn create-mapping [{:keys [directory filemode username groupname sources]}]
-  (data/to-java Mapping {:directory directory
-                         :filemode filemode
-                         :username username
-                         :groupname groupname
-                         :sources (create-sources sources)}))
-
-(defn create-mappings [[mapping & rest]]
-  (if mapping (cons (create-mapping mapping) (create-mappings rest)) ()))
 
 (defn createBaseMojo []
   (let [mojo (RPMMojo.)
@@ -39,11 +35,11 @@
 (defn rpm
   "Create an RPM"
   [{{:keys [summary name copyright mappings]} :rpm :keys [version]} & keys]
-
   (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
     (set-mojo! mojo "summary" summary)
-    (set-mojo! mojo "mappings" (arrayList (create-mappings mappings)))
     (set-mojo! mojo "copyright" copyright)
+    
+    (set-mojo! mojo "mappings" (create-array-list (create-mappings mappings)))
     (.execute mojo)))
