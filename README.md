@@ -5,13 +5,13 @@ it only works with Leiningen 2.
 
 ## Usage
 
-Add `lein-rpm "0.0.2"` to the plugins in `project.clj` and
+Add `lein-rpm "0.0.3"` to the plugins in `project.clj` and
 then add an `:rpm` key to the project. This example shows most of the
 options that are available.
 
     (defproject example "0.1-SNAPSHOT"
       :description "Create an RPM"
-      :plugins [[lein-rpm "0.0.2"]]
+      :plugins [[lein-rpm "0.0.3"]]
       :rpm {:name "Name"
             :summary "RPM summary"
             :copyright "Andrew H Jones"
@@ -19,6 +19,8 @@ options that are available.
                         :filemode "440"
                         :username "dumper"
                         :groupname "dumpgroup"
+                        :preinstall {:scriptfile "script.sh"}
+                        ;; There are also postinstall, preremove and postremove
                         :sources {:source [{:location "target/classes"}
                                            {:location "src"}]
                                   :softlinkSource [{:location "/usr/local/bin/new.sh"
