@@ -35,9 +35,12 @@
     (.enableLogging fileFilter (ConsoleLogger. 0 "Logger"))
     (set-mojo! mojo "mavenFileFilter" fileFilter)))
 
+(defn createScriptlet [description]
+  (data/to-java Scriptlet ))
+
 (defn rpm
   "Create an RPM"
-  [{{:keys [summary name copyright mappings]} :rpm :keys [version]} & keys]
+  [{{:keys [summary name copyright mappings preinstall postinstall preremove postremove]} :rpm :keys [version]} & keys]
   (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
@@ -45,4 +48,8 @@
     (set-mojo! mojo "copyright" copyright)
     
     (set-mojo! mojo "mappings" (create-array-list (create-mappings mappings)))
+    (set-mojo! mojo "preinstallScriptlet" (data/to-java preinstall))
+    (set-mojo! mojo "postinstallScriptlet" (data/to-java postinstall))
+    (set-mojo! mojo "preremoveScriptlet" (data/to-java preremove))
+    (set-mojo! mojo "postremoveScriptlet" (data/to-java postremove))
     (.execute mojo)))
