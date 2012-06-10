@@ -35,6 +35,12 @@
     (.enableLogging fileFilter (ConsoleLogger. 0 "Logger"))
     (set-mojo! mojo "mavenFileFilter" fileFilter)))
 
+(defn if-key-update [m k f]
+  (if-let [v (get m k)] (assoc m k (f v)) m))
+
+(defn create-scriptlet [s]
+  (data/to-java Scriptlet (if-key-update s :scriptFile #(clojure.java.io/file %))))
+
 (defn rpm
   "Create an RPM"
   [{{:keys [summary name copyright mappings preinstall postinstall preremove postremove]} :rpm :keys [version]} & keys]
@@ -45,8 +51,8 @@
     (set-mojo! mojo "copyright" copyright)
     
     (set-mojo! mojo "mappings" (create-array-list (create-mappings mappings)))
-    (set-mojo! mojo "preinstallScriptlet" (data/to-java Scriptlet preinstall))
-    (set-mojo! mojo "postinstallScriptlet" (data/to-java Scriptlet postinstall))
-    (set-mojo! mojo "preremoveScriptlet" (data/to-java Scriptlet preremove))
-    (set-mojo! mojo "postremoveScriptlet" (data/to-java Scriptlet postremove))
+    (set-mojo! mojo "preinstallScriptlet" (create-scriptlet preinstall))
+    (set-mojo! mojo "postinstallScriptlet" (create-scriptlet postinstall))
+    (set-mojo! mojo "preremoveScriptlet" (create-scriptlet preremove))
+    (set-mojo! mojo "postremoveScriptlet" (create-scriptlet postremove))
     (.execute mojo)))
