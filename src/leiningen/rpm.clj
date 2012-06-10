@@ -1,6 +1,6 @@
 (ns leiningen.rpm
   (:require [clojure.java.data :as data])
-  (:import [org.codehaus.mojo.rpm RPMMojo AbstractRPMMojo Mapping Source SoftlinkSource]
+  (:import [org.codehaus.mojo.rpm RPMMojo AbstractRPMMojo Mapping Source SoftlinkSource Scriptlet]
            [org.apache.maven.project MavenProject]
            [org.apache.maven.shared.filtering DefaultMavenFileFilter]
            [org.codehaus.plexus.logging.console ConsoleLogger]))
