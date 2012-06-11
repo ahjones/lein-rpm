@@ -13,6 +13,7 @@
                     :filemode "440"
                     :username "dumper"
                     :groupname "dumpgroup"
+                    :prefix "/usr/local"
                     :preinstall {:scriptfile "script.sh"}
                     ;; There are also postinstall, preremove and postremove
                     :sources {:source [{:location "target/classes"}
