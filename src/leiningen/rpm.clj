@@ -41,9 +41,14 @@
 (defn create-scriptlet [s]
   (data/to-java Scriptlet (if-key-update s :scriptFile #(clojure.java.io/file %))))
 
+(defn create-dependency [rs]
+  (let [hs (java.util.LinkedHashSet.)]
+    (doseq [r rs] (.add hs r))
+    hs))
+
 (defn rpm
   "Create an RPM"
-  [{{:keys [summary name copyright mappings prefix preinstall postinstall preremove postremove]} :rpm :keys [version]} & keys]
+  [{{:keys [summary name copyright mappings prefix preinstall postinstall preremove postremove requires provides conflicts]} :rpm :keys [version]} & keys]
   (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
@@ -56,4 +61,8 @@
     (set-mojo! mojo "postinstallScriptlet" (create-scriptlet postinstall))
     (set-mojo! mojo "preremoveScriptlet" (create-scriptlet preremove))
     (set-mojo! mojo "postremoveScriptlet" (create-scriptlet postremove))
+    
+    (set-mojo! mojo "requires" (create-dependency requires))
+    (set-mojo! mojo "provides" (create-dependency provides))
+    (set-mojo! mojo "conflicts" (create-dependency conflicts))
     (.execute mojo)))

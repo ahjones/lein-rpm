@@ -14,6 +14,7 @@
                     :username "dumper"
                     :groupname "dumpgroup"
                     :prefix "/usr/local"
+                    :requires ["trash-truck > 1.0"]
                     :preinstall {:scriptfile "script.sh"}
                     ;; There are also postinstall, preremove and postremove
                     :sources {:source [{:location "target/classes"}
