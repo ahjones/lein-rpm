@@ -1,4 +1,4 @@
-(defproject lein-rpm "0.0.4-SNAPSHOT"
+(defproject lein-rpm "0.0.5-SNAPSHOT"
   :description "Create an RPM"
   :dependencies [[org.codehaus.mojo/rpm-maven-plugin "2.1-alpha-1"]
                  [org.clojure/java.data "0.1.1"]]
