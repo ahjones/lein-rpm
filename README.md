@@ -20,6 +20,7 @@ options that are available.
                         :username "dumper"
                         :groupname "dumpgroup"
                         :preinstall {:scriptfile "script.sh"}
+                        :requires ["trash-truck > 1.0"]
                         ;; There are also postinstall, preremove and postremove
                         :sources {:source [{:location "target/classes"}
                                            {:location "src"}]
