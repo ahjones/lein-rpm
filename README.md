@@ -15,6 +15,7 @@ options that are available.
       :rpm {:name "Name"
             :summary "RPM summary"
             :copyright "Andrew H Jones"
+            :workarea "target"
             :mappings [{:directory "/usr/local/bin/landfill"
                         :filemode "440"
                         :username "dumper"
