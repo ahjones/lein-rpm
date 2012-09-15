@@ -11,7 +11,7 @@ options that are available.
 
     (defproject example "0.1-SNAPSHOT"
       :description "Create an RPM"
-      :plugins [[lein-rpm "0.0.3"]]
+      :plugins [[lein-rpm "0.0.5"]]
       :rpm {:name "Name"
             :summary "RPM summary"
             :copyright "Andrew H Jones"
