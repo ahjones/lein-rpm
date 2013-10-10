@@ -28,6 +28,7 @@ options that are available.
                                   :softlinkSource [{:location "/usr/local/bin/new.sh"
                                                     :destination "old.sh"}]}}]})
 
+To create the RPM run `lein rpm`.
 ## License
 
 Copyright (C) 2012 Andrew Jones
