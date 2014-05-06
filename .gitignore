@@ -9,3 +9,4 @@
 /checkouts
 /.lein-deps-sum
 *~
+/.nrepl-port
