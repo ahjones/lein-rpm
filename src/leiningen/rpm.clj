@@ -39,7 +39,7 @@
   (if-let [v (get m k)] (assoc m k (f v)) m))
 
 (defn create-scriptlet [s]
-  (data/to-java Scriptlet (if-key-update s :scriptFile #(clojure.java.io/file %))))
+  (data/to-java Scriptlet (if-key-update s :script-file #(clojure.java.io/file %))))
 
 (defn create-dependency [rs]
   (let [hs (java.util.LinkedHashSet.)]
@@ -48,13 +48,19 @@
 
 (defn rpm
   "Create an RPM"
-  [{{:keys [summary name copyright mappings prefix preinstall postinstall preremove postremove requires provides conflicts workarea]} :rpm :keys [version]} & keys]
+  [{{:keys [summary group name target-arch target-os target-vendor mappings
+            prefix preinstall postinstall preremove postremove requires provides
+            conflicts workarea]} :rpm
+    :keys [version]}]
   (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
     (set-mojo! mojo "summary" summary)
-    (set-mojo! mojo "copyright" copyright)
-    (set-mojo! mojo "workarea" (clojure.java.io/file workarea)) 
+    (set-mojo! mojo "group" group)
+    (set-mojo! mojo "targetArch" target-arch)
+    (set-mojo! mojo "targetOS" target-os)
+    (set-mojo! mojo "targetVendor" target-vendor)
+    (set-mojo! mojo "workarea" (clojure.java.io/file workarea))
     (set-mojo! mojo "mappings" (create-array-list (create-mappings mappings)))
     (set-mojo! mojo "prefix" prefix)
     (set-mojo! mojo "preinstallScriptlet" (create-scriptlet preinstall))

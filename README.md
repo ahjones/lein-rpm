@@ -16,12 +16,12 @@ options that are available.
             :summary "RPM summary"
             :copyright "Andrew H Jones"
             :workarea "target"
+            :requires ["trash-truck > 1.0"]
+			:preinstall {:scriptfile "script.sh"}
             :mappings [{:directory "/usr/local/bin/landfill"
                         :filemode "440"
                         :username "dumper"
                         :groupname "dumpgroup"
-                        :preinstall {:scriptfile "script.sh"}
-                        :requires ["trash-truck > 1.0"]
                         ;; There are also postinstall, preremove and postremove
                         :sources {:source [{:location "target/classes"}
                                            {:location "src"}]
