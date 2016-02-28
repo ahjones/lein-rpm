@@ -5,7 +5,7 @@ it only works with Leiningen 2.
 
 ## Usage
 
-Add `lein-rpm "0.0.5"` to the plugins in `project.clj` and
+Add `lein-rpm "0.0.6"` to the plugins in `project.clj` and
 then add an `:rpm` key to the project. This example shows most of the
 options that are available.
 
@@ -31,6 +31,6 @@ options that are available.
 To create the RPM run `lein rpm`.
 ## License
 
-Copyright (C) 2012 Andrew Jones
+Copyright (C) 2012-2016 Andrew Jones
 
 Distributed under the Eclipse Public License, the same as Clojure.
